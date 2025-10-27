@@ -16,7 +16,7 @@ const HeroSection = () => {
     if (email) {
       toast({
         title: "You're on the list! 🎉",
-        description: "We'll notify you when we launch.",
+        description: "Insha Allah, We'll notify you when we launch.",
       });
       setEmail("");
     }
@@ -39,12 +39,16 @@ const HeroSection = () => {
         </div>
 
         <form
+          name="waitlist-hero"
+          data-netlify="true"
           onSubmit={handleSubmit}
           className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-12 sm:mb-16 animate-fade-in px-2"
           style={{ animationDelay: "0.2s" }}
         >
+          <input type="hidden" name="form-name" value="waitlist-hero" />
           <Input
             type="email"
+            name="email"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}

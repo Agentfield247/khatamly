@@ -19,6 +19,14 @@
   </head>
 
   <body>
+    <!-- Hidden forms for Netlify -->
+    <form name="waitlist-hero" netlify netlify-honeypot="bot-field" hidden>
+      <input type="email" name="email" />
+    </form>
+    <form name="waitlist-cta" netlify netlify-honeypot="bot-field" hidden>
+      <input type="email" name="email" />
+    </form>
+    
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

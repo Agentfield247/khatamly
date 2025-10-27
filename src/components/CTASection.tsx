@@ -12,7 +12,7 @@ const CTASection = () => {
     if (email) {
       toast({
         title: "You're on the list! 🎉",
-        description: "We'll notify you when we launch.",
+        description: "Insha Allah, We'll notify you when we launch.",
       });
       setEmail("");
     }
@@ -29,11 +29,15 @@ const CTASection = () => {
         </p>
 
         <form
+          name="waitlist-cta"
+          data-netlify="true"
           onSubmit={handleSubmit}
           className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-lg mx-auto px-2"
         >
+          <input type="hidden" name="form-name" value="waitlist-cta" />
           <Input
             type="email"
+            name="email"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
