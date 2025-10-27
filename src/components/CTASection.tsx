@@ -7,14 +7,50 @@ const CTASection = () => {
   const [email, setEmail] = useState("");
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  /**
+   * This is the corrected function.
+   * It is now 'async' and includes the 'fetch' call to Netlify.
+   */
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email) {
+
+    if (!email) {
+      toast({
+        title: "Error",
+        description: "Please enter your email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      // 1. Prepare the data for Netlify
+      const formData = new URLSearchParams({
+        "form-name": "waitlist-cta", // This MUST match your form's 'name'
+        "email": email,
+      });
+
+      // 2. Send the data to Netlify's backend
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString(),
+      });
+
+      // 3. If the fetch is successful, show the success toast
       toast({
         title: "You're on the list! 🎉",
         description: "Insha Allah, We'll notify you when we launch.",
       });
-      setEmail("");
+      setEmail(""); // Clear the form
+
+    } catch (error) {
+      // 4. If the fetch fails, show an error toast
+      toast({
+        title: "An error occurred.",
+        description: "Please check your connection and try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -34,6 +70,31 @@ const CTASection = () => {
           onSubmit={handleSubmit}
           className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-lg mx-auto px-2"
         >
+          {/* This hidden input is correct and necessary */}
+          <input type="hidden" name="form-name" value="waitlist-cta" />
+          
+          <Input
+            type="email"
+            name="email" // This 'name' attribute is also necessary
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="flex-1 h-12 sm:h-14 px-4 sm:px-6 text-base sm:text-lg border-2 border-border focus:border-primary"
+          />
+          <Button
+            type="submit"
+            className="h-12 sm:h-14 px-8 sm:px-10 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-base sm:text-lg"
+          >
+            Join Waitlist
+          </Button>
+        </form>
+      </div>
+    </section>
+  );
+};
+
+export default CTASection;
           <input type="hidden" name="form-name" value="waitlist-cta" />
           <Input
             type="email"
